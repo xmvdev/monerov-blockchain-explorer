@@ -7,6 +7,14 @@
     {{#refresh}}
         <meta http-equiv="refresh" content="10">
     {{/refresh}}
+    {{^is_index}}
+       <meta name="robots" content="noindex">
+    {{/is_index}}
+    {{#is_index}}
+       {{^is_page_zero}}
+       <meta name="robots" content="noindex">
+       {{/is_page_zero}}
+    {{/is_index}}
     <title>Monerov Blockchain Explorer</title>
     <!--<link rel="stylesheet" type="text/css" href="/css/style.css">-->
     <style type="text/css">

@@ -267,13 +267,6 @@ me_get_block_longhash(const Blockchain *pbc,
                    const uint64_t height,
                    const int miners)
 {
-  // block 202612 bug workaround
-  if (height == 202612)
-  {
-    static const std::string longhash_202612 = "84f64766475d51837ac9efbef1926486e58563c95a19fef4aec3254f03000000";
-    epee::string_tools::hex_to_pod(longhash_202612, res);
-    return true;
-  }
   blobdata bd = get_block_hashing_blob(b);
   if (b.major_version >= RX_BLOCK_VERSION)
   {
@@ -628,6 +621,7 @@ index2(uint64_t page_no = 0, bool refresh_page = false)
             {"page_no"                  , page_no},
             {"total_page_no"            , (height / no_of_last_blocks)},
             {"is_page_zero"             , !bool(page_no)},
+            {"is_index"                 , true},
             {"no_of_last_blocks"        , no_of_last_blocks},
             {"next_page"                , (page_no + 1)},
             {"prev_page"                , (page_no > 0 ? page_no - 1 : 0)},
@@ -2110,7 +2104,7 @@ show_my_outputs(string tx_hash_str,
             {"blk_height"           , tx_blk_height_str},
             {"tx_size"              , fmt::format("{:0.4f}",
                                                   static_cast<double>(txd.size) / 1024.0)},
-            {"tx_fee"               , xmreg::xmr_amount_to_str(txd.fee, "{:0.12f}", true)},
+            {"tx_fee"               , xmreg::xmr_amount_to_str(txd.fee, "{:0.11f}", true)},
             {"blk_timestamp"        , blk_timestamp},
             {"delta_time"           , age.first},
             {"outputs_no"           , static_cast<uint64_t>(txd.output_pub_keys.size())},
@@ -2670,7 +2664,7 @@ show_my_outputs(string tx_hash_str,
     context["show_inputs"]   = show_key_images;
     context["inputs_no"]     = static_cast<uint64_t>(inputs.size());
     context["sum_mixin_xmr"] = xmreg::xmr_amount_to_str(
-            sum_mixin_xmr, "{:0.12f}", false);
+            sum_mixin_xmr, "{:0.11f}", false);
 
 
     uint64_t possible_spending  {0};
@@ -2703,7 +2697,7 @@ show_my_outputs(string tx_hash_str,
     }
 
     context["possible_spending"] = xmreg::xmr_amount_to_str(
-            possible_spending, "{:0.12f}", false);
+            possible_spending, "{:0.11f}", false);
 
     add_css_style(context);
 
@@ -6060,9 +6054,9 @@ construct_tx_context(transaction tx, uint16_t with_ring_signatures = 0)
             {"blk_height"            , tx_blk_height_str},
             {"tx_blk_height"         , tx_blk_height},
             {"tx_size"               , fmt::format("{:0.4f}", tx_size)},
-            {"tx_fee"                , xmreg::xmr_amount_to_str(txd.fee, "{:0.12f}", false)},
+            {"tx_fee"                , xmreg::xmr_amount_to_str(txd.fee, "{:0.11f}", false)},
             {"tx_fee_micro"          , xmreg::xmr_amount_to_str(txd.fee*1e6, "{:0.4f}", false)},
-            {"payed_for_kB"          , fmt::format("{:0.12f}", payed_for_kB)},
+            {"payed_for_kB"          , fmt::format("{:0.11f}", payed_for_kB)},
             {"tx_version"            , static_cast<uint64_t>(txd.version)},
             {"blk_timestamp"         , blk_timestamp},
             {"blk_timestamp_uint"    , blk.timestamp},
