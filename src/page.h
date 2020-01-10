@@ -5685,6 +5685,7 @@ json_emission()
         j_data = json {
                 {"blk_no"  , current_values.blk_no - 1},
                 {"coinbase", current_values.coinbase},
+                {"coinbase2", (double)current_values.coinbase/100000000000.0f},
                 {"fee"     , current_values.fee},
         };
     }
@@ -5694,6 +5695,35 @@ json_emission()
     return j_response;
 }
 
+string
+txt_emission()
+{
+    // get basic network info
+    if (!CurrentBlockchainStatus::is_thread_running())
+    {
+		return "";
+    }
+    else
+    {
+        CurrentBlockchainStatus::Emission current_values = CurrentBlockchainStatus::get_emission();
+        return std::to_string(current_values.coinbase);
+    }
+}
+
+string
+txt_emission2()
+{
+    // get basic network info
+    if (!CurrentBlockchainStatus::is_thread_running())
+    {
+		return "";
+    }
+    else
+    {
+        CurrentBlockchainStatus::Emission current_values = CurrentBlockchainStatus::get_emission();
+        return std::to_string((double)current_values.coinbase/100000000000.0f);
+    }
+}
 
 /*
       * Lets use this json api convention for success and error
